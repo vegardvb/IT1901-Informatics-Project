@@ -1,0 +1,41 @@
+@startuml corePackageDiagram
+title Package Diagram for core 
+namespace core {
+    namespace src {
+        namespace main.java.bibtek {
+            namespace core {
+                class Book 
+                class BookEntry
+                class BookReadingState
+                class Library
+                class User
+                class UserMap
+            }
+            namespace json {
+                class BooksAPIHandler
+                class ISBNUtils
+                class LocalDateSerializer
+                class LocalDateDeSerializer
+                interface UserMapHandler
+                class RemoteStorageHandler
+                class LocalStorageHandler
+                class StorageHandler
+            }
+        }
+        namespace test.java.bibtek {
+            namespace core {
+                class BookReadingStateTest
+                class LibraryTest
+                class TestConstants
+                class UserTest
+
+            }
+            namespace json {
+            class BooksAPIHandlerTest
+                class LocalStorageHandlerTest
+            }
+        }
+    }
+}
+
+@enduml 

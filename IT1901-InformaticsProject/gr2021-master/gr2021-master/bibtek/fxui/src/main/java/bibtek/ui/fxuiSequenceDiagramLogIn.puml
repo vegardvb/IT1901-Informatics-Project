@@ -1,0 +1,41 @@
+@startuml 
+title Sequence diagram for logging in
+actor Actor #red
+participant LogInPageController
+participant LibraryController
+participant StorageHandler
+participant RemoteStorageHandler
+participant LocalStorageHandler
+
+
+note left of Actor: Enter username
+Actor -> LogInPageController: "Clicks Log in button" -> logIn()
+LogInPageController -> StorageHandler: getUser(username)
+alt Remote is available
+   StorageHandler -> RemoteStorageHandler: getUser(username)
+   alt User with username exists
+      RemoteStorageHandler --> StorageHandler: user with given username
+      StorageHandler --> LogInPageController: user
+      LogInPageController -> LibraryController: changeSceneAndUpdateUser()
+      LibraryController --> Actor: Shows books in library to user 
+note left of Actor: Has now logged in
+   else User with given username does not exist in server
+      RemoteStorageHandler --> StorageHandler: null
+      StorageHandler --> LogInPageController: null
+      LogInPageController --> Actor: "No user with given username" 
+   end
+else Remote if unavailable
+   StorageHandler -> LocalStorageHandler: getUser(username)
+   alt User with username exists locally
+      LocalStorageHandler --> StorageHandler: user with given username
+      StorageHandler --> LogInPageController: user
+      LogInPageController -> LogInPageController: changeSceneAndUpdateUser()
+      LibraryController --> Actor: Shows books in library to user 
+note left of Actor: Has now logged in
+   else User with given username does not exist locally
+      LocalStorageHandler --> StorageHandler: null
+      StorageHandler --> LogInPageController: null
+      LogInPageController --> Actor: "No user with given username" 
+      end
+end
+@enduml
